@@ -1,0 +1,13 @@
+{
+  "uid":"crypto-analytics-overview",
+  "title":"Crypto Analytics Overview",
+  "schemaVersion":39,
+  "version":1,
+  "panels":[
+    {"type":"timeseries","title":"Events Produced","gridPos":{"x":0,"y":0,"w":12,"h":8},"targets":[{"expr":"sum by(topic,chain) (rate(events_produced_total[5m]))"}]},
+    {"type":"timeseries","title":"Events Consumed","gridPos":{"x":12,"y":0,"w":12,"h":8},"targets":[{"expr":"sum by(topic) (rate(events_consumed_total[5m]))"}]},
+    {"type":"timeseries","title":"Poison Events / DLQ","gridPos":{"x":0,"y":8,"w":12,"h":8},"targets":[{"expr":"sum by(topic) (rate(poison_events_total[5m]))"}]},
+    {"type":"timeseries","title":"Processing Latency p95","gridPos":{"x":12,"y":8,"w":12,"h":8},"targets":[{"expr":"histogram_quantile(0.95, sum by(le,topic) (rate(event_processing_seconds_bucket[5m])))"}]},
+    {"type":"timeseries","title":"Ingestor Block Lag","gridPos":{"x":0,"y":16,"w":12,"h":8},"targets":[{"expr":"ingestor_block_lag"}]}
+  ]
+}

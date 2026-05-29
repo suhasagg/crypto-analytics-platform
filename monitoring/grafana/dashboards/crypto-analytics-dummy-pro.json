@@ -1,0 +1,362 @@
+{
+  "id": null,
+  "uid": "crypto-analytics-dummy-pro",
+  "title": "Crypto Analytics Dummy Pro",
+  "tags": ["crypto", "dummy-data", "fancy", "timeseries"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5s",
+  "time": { "from": "now-30m", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Total TPS",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum(crypto_tps)", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "blue", "value": null },
+              { "color": "green", "value": 200 },
+              { "color": "purple", "value": 500 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 4 }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Indexed Transactions",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum(crypto_transactions_indexed_total)", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "blue", "value": 10000 },
+              { "color": "purple", "value": 100000 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 4 }
+    },
+    {
+      "id": 3,
+      "type": "gauge",
+      "title": "Cache Hit Ratio",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "avg(crypto_cache_hit_ratio) * 100", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "orange", "value": 60 },
+              { "color": "green", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showThresholdLabels": true, "showThresholdMarkers": true },
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 4 }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Whale Transfers",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum(crypto_whale_transfers_total)", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "orange", "value": null },
+              { "color": "red", "value": 500 },
+              { "color": "purple", "value": 1000 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 4 }
+    },
+
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "TPS by Chain",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "crypto_tps", "legendFormat": "{{chain}}", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 3, "fillOpacity": 30, "gradientMode": "scheme", "showPoints": "never" }
+        },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "gridPos": { "x": 0, "y": 4, "w": 12, "h": 8 }
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Gas Price by Chain",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "crypto_gas_price_gwei", "legendFormat": "{{chain}}", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": { "drawStyle": "bars", "lineInterpolation": "linear", "lineWidth": 1, "fillOpacity": 55, "gradientMode": "hue", "showPoints": "never" }
+        },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "gridPos": { "x": 12, "y": 4, "w": 12, "h": 8 }
+    },
+
+    {
+      "id": 7,
+      "type": "bargauge",
+      "title": "Indexer Lag by Chain",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "crypto_indexer_lag_blocks", "legendFormat": "{{chain}}", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 10 },
+              { "color": "red", "value": 20 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "displayMode": "gradient", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true },
+      "gridPos": { "x": 0, "y": 12, "w": 8, "h": 8 }
+    },
+    {
+      "id": 8,
+      "type": "piechart",
+      "title": "Active Addresses Share",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum by (chain) (crypto_active_addresses)", "legendFormat": "{{chain}}", "refId": "A" }],
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "options": { "displayLabels": ["name", "percent"], "legend": { "displayMode": "table", "placement": "right", "showLegend": true }, "pieType": "donut", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "tooltip": { "mode": "single", "sort": "desc" } },
+      "gridPos": { "x": 8, "y": 12, "w": 8, "h": 8 }
+    },
+    {
+      "id": 9,
+      "type": "gauge",
+      "title": "Average API Latency",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "avg(crypto_api_latency_ms)", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "min": 0,
+          "max": 300,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 120 },
+              { "color": "red", "value": 220 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showThresholdLabels": true, "showThresholdMarkers": true },
+      "gridPos": { "x": 16, "y": 12, "w": 8, "h": 8 }
+    },
+
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "DEX Volume by Chain/DEX",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "crypto_dex_volume_usd", "legendFormat": "{{dex}} / {{chain}}", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 40, "gradientMode": "scheme", "showPoints": "never" }
+        },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "gridPos": { "x": 0, "y": 20, "w": 24, "h": 9 }
+    },
+
+    {
+      "id": 11,
+      "type": "timeseries",
+      "title": "Token Price Time Series",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "crypto_token_price_usd", "legendFormat": "{{token}}", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 3, "fillOpacity": 15, "gradientMode": "opacity", "showPoints": "never" }
+        },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "gridPos": { "x": 0, "y": 29, "w": 12, "h": 8 }
+    },
+    {
+      "id": 12,
+      "type": "timeseries",
+      "title": "API Latency by Endpoint",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "crypto_api_latency_ms", "legendFormat": "{{endpoint}}", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 25, "gradientMode": "scheme", "showPoints": "never" }
+        },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "gridPos": { "x": 12, "y": 29, "w": 12, "h": 8 }
+    },
+
+    {
+      "id": 13,
+      "type": "timeseries",
+      "title": "Kafka Consumer Lag",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "crypto_kafka_lag", "legendFormat": "{{consumer_group}} / {{chain}}", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": { "drawStyle": "bars", "lineWidth": 1, "fillOpacity": 65, "gradientMode": "hue", "showPoints": "never" }
+        },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "gridPos": { "x": 0, "y": 37, "w": 12, "h": 8 }
+    },
+    {
+      "id": 14,
+      "type": "timeseries",
+      "title": "Chain Head Height",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "crypto_chain_head_height", "legendFormat": "{{chain}}", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2, "fillOpacity": 10, "gradientMode": "opacity", "showPoints": "never" }
+        },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "gridPos": { "x": 12, "y": 37, "w": 12, "h": 8 }
+    },
+
+    {
+      "id": 15,
+      "type": "bargauge",
+      "title": "Tenant Request Load",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "crypto_tenant_requests_total", "legendFormat": "{{tenant}}", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "blue", "value": null },
+              { "color": "green", "value": 40 },
+              { "color": "purple", "value": 80 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "displayMode": "gradient", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true },
+      "gridPos": { "x": 0, "y": 45, "w": 8, "h": 7 }
+    },
+    {
+      "id": 16,
+      "type": "piechart",
+      "title": "Whale Transfers by Chain",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum by (chain) (crypto_whale_transfers_total)", "legendFormat": "{{chain}}", "refId": "A" }],
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "options": { "displayLabels": ["name", "value"], "legend": { "displayMode": "table", "placement": "right", "showLegend": true }, "pieType": "pie", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "tooltip": { "mode": "single", "sort": "desc" } },
+      "gridPos": { "x": 8, "y": 45, "w": 8, "h": 7 }
+    },
+    {
+      "id": 17,
+      "type": "stat",
+      "title": "DLQ Events",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum(crypto_dlq_events_total)", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 5 },
+              { "color": "red", "value": 10 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "gridPos": { "x": 16, "y": 45, "w": 4, "h": 7 }
+    },
+    {
+      "id": 18,
+      "type": "stat",
+      "title": "Reorg Events",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "targets": [{ "expr": "sum(crypto_reorg_events_total)", "refId": "A" }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 2 },
+              { "color": "red", "value": 5 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
+      "gridPos": { "x": 20, "y": 45, "w": 4, "h": 7 }
+    }
+  ]
+}

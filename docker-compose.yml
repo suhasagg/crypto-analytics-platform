@@ -1,0 +1,100 @@
+version: '3.8'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    depends_on: [zookeeper]
+    ports: ['9092:9092']
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.6.1
+    depends_on: [kafka]
+    ports: ['8085:8081']
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:29092
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    ports: ['5433:5432']
+    environment:
+      POSTGRES_DB: crypto_analytics
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
+    ports: ['9200:9200']
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: 'false'
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+  redis:
+    image: redis:7-alpine
+    ports: ['6379:6379']
+  prometheus:
+    image: prom/prometheus:latest
+    ports: ['9090:9090']
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana:11.1.0
+    ports: ['3000:3000']
+    depends_on: [prometheus,timescaledb]
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ./infra/grafana/provisioning:/etc/grafana/provisioning
+      - ./infra/grafana/dashboards:/var/lib/grafana/dashboards
+  ingestor:
+    build: ./services/ingestor
+    depends_on: [kafka,schema-registry]
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      INGEST_MODE: rpc
+      CHAINS: ethereum,cosmos,solana
+      ETHEREUM_RPC_URL: ${ETHEREUM_RPC_URL:-https://ethereum-rpc.publicnode.com}
+      COSMOS_RPC_URL: ${COSMOS_RPC_URL:-https://rpc.cosmos.network:443}
+      SOLANA_RPC_URL: ${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}
+      CONFIRMATIONS: 12
+      POLL_INTERVAL_MS: 5000
+    ports: ['8081:8081']
+  indexer:
+    build: ./services/indexer
+    depends_on: [kafka,timescaledb,elasticsearch,redis]
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      KAFKA_GROUP_ID: crypto-indexer-v1
+      PG_DSN: postgres://postgres:postgres@timescaledb:5432/crypto_analytics?sslmode=disable
+      ES_URL: http://elasticsearch:9200
+      REDIS_ADDR: redis:6379
+    ports: ['8082:8082']
+  api:
+    build: ./services/api
+    depends_on: [timescaledb,elasticsearch,redis]
+    environment:
+      PG_DSN: postgres://postgres:postgres@timescaledb:5432/crypto_analytics?sslmode=disable
+      ES_URL: http://elasticsearch:9200
+      REDIS_ADDR: redis:6379
+      JWT_SECRET: dev-secret-change-me
+    ports: ['8080:8080']
+
+  crypto-dummy-exporter:
+    build:
+      context: ./tools/dummy-metrics-exporter
+    ports:
+      - "9109:9109"
+    restart: unless-stopped

@@ -1,0 +1,21 @@
+{
+  "type": "record",
+  "name": "TransactionEvent",
+  "namespace": "crypto.analytics.v1",
+  "fields": [
+    {"name":"tenant_id","type":"string","default":"demo"},
+    {"name":"chain_id","type":"string"},
+    {"name":"hash","type":"string"},
+    {"name":"block_number","type":"long"},
+    {"name":"block_hash","type":"string"},
+    {"name":"from","type":["null","string"],"default":null},
+    {"name":"to","type":["null","string"],"default":null},
+    {"name":"token_address","type":["null","string"],"default":null},
+    {"name":"token_symbol","type":["null","string"],"default":null},
+    {"name":"value","type":"string"},
+    {"name":"fee","type":"string"},
+    {"name":"gas_used","type":"string"},
+    {"name":"status","type":"string"},
+    {"name":"unix_ms","type":"long"}
+  ]
+}

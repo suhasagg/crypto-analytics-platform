@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: indexer, namespace: crypto-analytics}
+spec:
+  replicas: 3
+  selector: {matchLabels: {app: indexer}}
+  template:
+    metadata: {labels: {app: indexer}}
+    spec:
+      containers:
+        - name: indexer
+          image: crypto-analytics/indexer:latest
+          ports: [{containerPort: 8082}]
+          envFrom: [{configMapRef: {name: crypto-config}}, {secretRef: {name: crypto-secrets}}]
+          env: [{name: KAFKA_GROUP_ID, value: crypto-indexer-v1}]
+          resources:
+            requests: {cpu: 500m, memory: 512Mi}
+            limits: {cpu: 2, memory: 1Gi}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: indexer, namespace: crypto-analytics}
+spec:
+  selector: {app: indexer}
+  ports: [{port: 8082, targetPort: 8082}]
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: {name: indexer-hpa, namespace: crypto-analytics}
+spec:
+  scaleTargetRef: {apiVersion: apps/v1, kind: Deployment, name: indexer}
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource: {name: cpu, target: {type: Utilization, averageUtilization: 70}}

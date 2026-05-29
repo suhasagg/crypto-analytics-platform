@@ -1,0 +1,41 @@
+syntax = "proto3";
+package crypto.analytics.v1;
+option go_package = "github.com/example/crypto-analytics/schemas/gen/go;analyticsv1";
+
+message BlockEvent {
+  string tenant_id = 1;
+  string chain_id = 2;
+  int64 number = 3;
+  string hash = 4;
+  string parent_hash = 5;
+  int64 unix_ms = 6;
+  int32 tx_count = 7;
+  string gas_used = 8;
+  bool finalized = 9;
+}
+
+message TransactionEvent {
+  string tenant_id = 1;
+  string chain_id = 2;
+  string hash = 3;
+  int64 block_number = 4;
+  string block_hash = 5;
+  string from = 6;
+  string to = 7;
+  string token_address = 8;
+  string token_symbol = 9;
+  string value = 10;
+  string fee = 11;
+  string gas_used = 12;
+  string status = 13;
+  int64 unix_ms = 14;
+}
+
+message ReorgEvent {
+  string tenant_id = 1;
+  string chain_id = 2;
+  int64 from_block = 3;
+  string old_head = 4;
+  string new_head = 5;
+  repeated string orphaned_hashes = 6;
+}
