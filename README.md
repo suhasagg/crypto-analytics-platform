@@ -1090,3 +1090,21 @@ open http://localhost:3000/d/crypto-full-demo-dashboard
 - Add CI/CD with GitHub Actions
 - Add Helm charts
 - Add Terraform for cloud deployment
+
+  ## Grafana Dashboard Screenshots
+
+<p align="center">
+  <img src="docs/images/grafana-dashboard-overview.png" width="900">
+</p>
+
+<p align="center">
+  <img src="docs/images/grafana-timeseries.png" width="900">
+</p>
+
+<p align="center">
+  <img src="docs/images/grafana-gauges-stats.png" width="900">
+</p>
+
+<p align="center">
+  <img src="docs/images/grafana-crypto-panels.png" width="900">
+</p>
