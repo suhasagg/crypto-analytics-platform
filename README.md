@@ -1093,18 +1093,20 @@ open http://localhost:3000/d/crypto-full-demo-dashboard
 
   ## Grafana Dashboard Screenshots
 
+## Grafana Dashboard Screenshots
+
 <p align="center">
-  <img src="./grafana-dashboard-overview.png" width="900">
+  <img src="Screenshot%20from%202026-05-29%2015-11-37.png" width="900">
 </p>
 
 <p align="center">
-  <img src="./grafana-timeseries.png" width="900">
+  <img src="Screenshot%20from%202026-05-29%2015-11-43.png" width="900">
 </p>
 
 <p align="center">
-  <img src="./grafana-gauges-stats.png" width="900">
+  <img src="Screenshot%20from%202026-05-29%2015-11-48.png" width="900">
 </p>
 
 <p align="center">
-  <img src="./grafana-crypto-panels.png" width="900">
+  <img src="Screenshot%20from%202026-05-29%2015-11-51.png" width="900">
 </p>
