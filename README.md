@@ -1094,17 +1094,17 @@ open http://localhost:3000/d/crypto-full-demo-dashboard
   ## Grafana Dashboard Screenshots
 
 <p align="center">
-  <img src="docs/images/grafana-dashboard-overview.png" width="900">
+  <img src="./grafana-dashboard-overview.png" width="900">
 </p>
 
 <p align="center">
-  <img src="docs/images/grafana-timeseries.png" width="900">
+  <img src="./grafana-timeseries.png" width="900">
 </p>
 
 <p align="center">
-  <img src="docs/images/grafana-gauges-stats.png" width="900">
+  <img src="./grafana-gauges-stats.png" width="900">
 </p>
 
 <p align="center">
-  <img src="docs/images/grafana-crypto-panels.png" width="900">
+  <img src="./grafana-crypto-panels.png" width="900">
 </p>
