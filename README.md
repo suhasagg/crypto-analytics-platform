@@ -1091,22 +1091,14 @@ open http://localhost:3000/d/crypto-full-demo-dashboard
 - Add Helm charts
 - Add Terraform for cloud deployment
 
-  ## Grafana Dashboard Screenshots
+ ## Grafana Dashboard Screenshots
 
-## Grafana Dashboard Screenshots
+<img src="./Screenshot%20from%202026-05-29%2015-36-55.png" width="900">
 
-<p align="center">
-  <img src="Screenshot%20from%202026-05-29%2015-11-37.png" width="900">
-</p>
+<img src="./Screenshot%20from%202026-05-29%2015-37-07.png" width="900">
 
-<p align="center">
-  <img src="Screenshot%20from%202026-05-29%2015-11-43.png" width="900">
-</p>
+<img src="./Screenshot%20from%202026-05-29%2015-37-15.png" width="900">
 
-<p align="center">
-  <img src="Screenshot%20from%202026-05-29%2015-11-48.png" width="900">
-</p>
+<img src="./Screenshot%20from%202026-05-29%2015-37-48.png" width="900">
 
-<p align="center">
-  <img src="Screenshot%20from%202026-05-29%2015-11-51.png" width="900">
-</p>
+
