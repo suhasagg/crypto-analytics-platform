@@ -90,8 +90,6 @@ The platform is structured to support:
 
 ### Demo Dashboard
 
-A full fake/demo Grafana dashboard is included using Grafana TestData DB.
-
 It shows:
 
 - Full time-series graphs
