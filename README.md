@@ -368,7 +368,7 @@ http://localhost:9200
 
 ## 8. Full Demo Grafana Dashboard
 
-The real services may initially have little data. To immediately show a full fancy dashboard with filled time-series, use the demo dashboard script.
+The real services may initially have little data. To immediately show a full dashboard with filled time-series, use the demo dashboard script.
 
 ### Step 1: Download/copy script
 
