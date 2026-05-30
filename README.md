@@ -98,7 +98,7 @@ It shows:
 - Bar gauges
 - Pie/donut charts
 - Heatmap-style panels
-- Crypto-specific fake metrics:
+- Crypto-specific metrics:
   - TPS
   - Gas price
   - DEX volume
