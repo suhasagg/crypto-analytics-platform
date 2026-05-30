@@ -407,7 +407,7 @@ Bar gauges
 Pie chart
 Donut chart
 Heatmap-style panel
-Crypto fake metrics
+Crypto metrics
 ```
 
 Crypto panels include:
